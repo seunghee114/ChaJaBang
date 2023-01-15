@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.pjt.model.dao.board.alpha.NoticeMapper">
+
+<insert id="insert" parameterType="NoticeDTO" useGeneratedKeys="true" keyProperty="nno">
+INSERT 
+INTO NOTICE (NTITLE, NCONTENT) 
+VALUES(#{ntitle}, #{ncontent})
+</insert>
+
+<delete id="delete" parameterType="int">
+DELETE FROM NOTICE WHERE NNO = #{nno}
+</delete>
+
+<update id="update" parameterType = "NoticeDTO">
+UPDATE NOTICE SET NTITLE = #{ntitle}, NCONTENT = #{ncontent}
+WHERE NNO = #{nno}
+</update>
+
+<resultMap type = "NoticeDTO" id= "Notice">
+	<result column="nwrite_date" property="nwriteDate"/>
+</resultMap>
+
+<select id= "selectAll" resultMap="Notice">
+	SELECT NNO, NTITLE, NCONTENT, NWRITE_DATE FROM NOTICE  ORDER BY NNO DESC
+</select> 
+
+<select id="selectFour" resultMap="Notice">
+SELECT NNO, NTITLE, NCONTENT, NWRITE_DATE FROM NOTICE 
+ORDER BY NNO DESC
+LIMIT 4
+</select>
+
+<select id="selectOne" parameterType="int" resultMap="Notice">
+SELECT NNO, NTITLE, NCONTENT, NWRITE_DATE FROM NOTICE
+WHERE NNO = #{nno}
+</select>
+</mapper>

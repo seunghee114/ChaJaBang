@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.pjt.model.dao.house.alpha.InterestMapper">
+	<insert id="insert" parameterType="InterestDTO">
+		INSERT INTO INTEREST (APTCODE, USERID)
+		VALUES (#{aptcode}, #{userid})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM INTEREST WHERE INO = #{ino}
+	</delete>
+	
+	<select id="selectAll" parameterType="String" resultType="InterestDTO">
+		SELECT * FROM INTEREST WHERE USERID = #{userid}
+	</select>
+	
+	<select id="selectCount" parameterType="long" resultType="int">
+		SELECT COUNT(*) FROM INTEREST WHERE APTCODE = #{aptcode}
+	</select>
+	
+	<select id="getId" parameterType="long" resultType="String">
+		SELECT USERID FROM INTEREST WHERE APTCODE=#{aptcode}
+	</select>
+</mapper>

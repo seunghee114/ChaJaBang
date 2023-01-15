@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.pjt.model.dao.board.BoardMapper">
+
+	<insert id="insert" parameterType="BoardDTO" useGeneratedKeys="true" keyProperty="bno" >
+		INSERT INTO
+		BOARD(TITLE, WRITER, CONTENT, WRITE_DATE)
+		VALUES(#{title}, #{writer}, #{content}, NOW())
+	</insert>
+	
+	<update id="updateReadCount" parameterType="int">
+		UPDATE BOARD
+		SET READ_COUNT = READ_COUNT+1
+		WHERE BNO=#{bno}
+	</update>	
+	
+	<select id="selectList" resultMap="rrrr">
+		SELECT 	BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT
+		FROM BOARD
+		ORDER BY BNO DESC
+		LIMIT #{start}, #{cnt}
+	</select>
+	
+	<select id="selectAll" resultMap="rrrr">
+		SELECT 	BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT
+		FROM BOARD
+		ORDER BY BNO DESC
+
+	</select>
+	
+	<select id="orderList" resultMap="rrrr">
+		SELECT BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT
+		FROM BOARD
+		ORDER BY READ_COUNT DESC
+				LIMIT 4
+	</select>
+	
+	<select id="selectOne" resultMap="rrrr">	
+		SELECT  *
+		FROM BOARD WHERE BNO=#{bno}
+	</select>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+
+		
+	<update id="modify" parameterType="BoardDTO">
+		UPDATE BOARD
+		SET TITLE=#{title}, CONTENT=#{content}
+		where BNO = #{bno}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM BOARD
+		WHERE BNO = #{bno}
+	</delete>
+	
+	<resultMap type="BoardDTO" id="rrrr">
+		<result column="WRITE_DATE" property="writeDate"/>
+		<result column="READ_COUNT" property="readCount"/>
+	</resultMap>
+	
+	
+	<sql id="sss">
+	BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT
+	</sql>
+</mapper>

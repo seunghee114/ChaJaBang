@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.pjt.model.dao.board.alpha.QnaMapper">
+
+<insert id="insert" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qno">
+INSERT INTO QNA (QTITLE, QCONTENT, QWRITER)
+VALUES( #{qtitle}, #{qcontent}, #{qwriter})
+</insert>
+
+<delete id="delete" parameterType="int">
+DELETE FROM QNA WHERE QNO = #{qno}
+</delete>
+
+<update id="updateUser" parameterType = "QnaDTO">
+UPDATE QNA SET QTITLE = #{qtitle}, QCONTENT =#{qcontent} WHERE QNO = #{qno}
+</update>
+
+<update id="updateManager" parameterType = "QnaDTO">
+UPDATE QNA SET ACONTENT=#{acontent}, IS_ANSWERED=1, IS_CHECKED=0, AWRITE_DATE=now()  WHERE QNO=#{qno};
+</update>
+
+<update id="updateChck" parameterType="int">
+	UPDATE QNA SET IS_CHECKED=1 WHERE QNO = #{qno};
+</update>
+
+
+<resultMap type = "QnaDTO" id= "Qna">
+	<result column="qwrite_date" property="qwriteDate"/>
+	<result column="awrite_date" property="awriteDate"/>
+	<result column="is_answered" property="isAnswered"/>
+	<result column="is_checked" property="isChecked"/>
+</resultMap>
+
+<select id= "selectUserAll" parameterType ="String" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	WHERE QWRITER = #{userid}
+	ORDER BY QNO DESC
+</select> 
+
+<select id= "selectUserNotCheck" parameterType ="String" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	WHERE QWRITER = #{userid} AND IS_ANSWERED = TRUE AND IS_CHECKED = FALSE
+	ORDER BY QNO DESC
+</select> 
+
+<select id= "selectUserAnswer" parameterType ="String" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	WHERE QWRITER = #{userid} AND IS_ANSWERED = TRUE
+	ORDER BY QNO DESC
+</select> 
+
+<select id= "selectUserNotAnswer" parameterType ="String" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	WHERE QWRITER = #{userid} AND IS_ANSWERED = FALSE
+	ORDER BY QNO DESC
+</select> 
+
+<select id= "selectManagerAll" parameterType ="String" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	ORDER BY QNO DESC
+</select> 
+
+<select id= "selectManagerNotAnswer" parameterType ="String" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	WHERE IS_ANSWERED = FALSE
+	ORDER BY QNO
+</select> 
+
+<select id= "selectOne" parameterType ="int" resultMap="Qna">
+	SELECT QNO, QTITLE, QCONTENT, QWRITER, QWRITE_DATE, ACONTENT, AWRITE_DATE, IS_ANSWERED, IS_CHECKED
+	FROM QNA
+	WHERE QNO = #{qno}
+</select> 
+
+</mapper>

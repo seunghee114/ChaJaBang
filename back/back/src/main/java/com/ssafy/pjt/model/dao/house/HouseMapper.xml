@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.pjt.model.dao.house.HouseMapper">
+
+	<!-- HouseDeal 관련 sql -->
+
+	<!-- 아파트 코드에 따른 거래 내역 리스트 -->
+	<select id="selectAllByAptCode" parameterType="long"
+		resultType="HouseDeal">
+		select * from housedeal where aptCode= #{aptCode} order by dealYear desc
+	</select>
+
+
+	<!-- HouseInfo 관련 sql -->
+	
+	<!-- 동에 있는 아파트 리스트  -->
+	<select id="selectHouseInfo" parameterType="String" resultType="HouseInfo">
+		select aptCode, buildYear, roadName, dongCode, apartmentName, lng, lat from houseinfo where dongCode = #{code} 
+	</select>
+	
+	<select id="selectOneByAptCode" parameterType="long"
+		resultType="HouseInfo">
+		select  aptCode, buildYear, roadName, dongCode, apartmentName, lng, lat from houseinfo where aptCode=#{aptCode}
+	</select>
+	
+	<select id="selectHouseOne" parameterType="String"
+		resultType="HouseInfo">
+		select * from houseinfo where dongCode=#{dongCode}
+	</select>
+
+	
+
+
+	<!-- dongCode 관련 sql -->
+	<select id="selectSido" parameterType="String" resultType="String">
+		select sidoName from dongcode group by sidoName
+	</select>
+
+	<select id="selectGugun" resultType="String">
+		select gugunName from dongcode where sidoName = #{sido} group by gugunName
+	</select>
+
+	<select id="selectDong" resultType="String">
+		select dongName from dongcode where sidoName = #{sido} and gugunName = #{gugun}
+	</select>
+
+	<select id="selectDongCode" parameterType="long" resultType="dongCode">
+		select * from dongcode where dongcode = (select dongcode from houseinfo where aptcode =#{aptcode});
+	</select>
+	
+	<select id="selectDongCodes" resultType="String">
+		select dongcode from dongcode where sidoname = #{sido} and gugunname= #{gugun} and dongname = #{dong}
+	</select>
+	
+	<select id="selectSidoGugunCode" resultType="String">
+		select dongCode from dongcode where sidoName=#{sido} and gugunName=#{gugun} and dongName is null
+	</select>
+
+</mapper>
